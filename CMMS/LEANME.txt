@@ -1,0 +1,19 @@
+Para poder utilizar el proyecto tienen que hacer un entorno virtual, la neta no sé si esta por defecto
+en el codigo pero para poder hacerlo tienen que poner en la terminar lo siguiente
+python -m venv venv
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\venv\Scripts\Activate
+pip install django
+cd CMMS
+
+en teoria lo de arriba solo lo tienen que hacer 1 vez
+pero cada aque vuelvan a entrar al codigo tienen que abrir el entorno virtual
+esto se hace asi, en la terminal
+
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\venv\Scripts\Activate
+
+si todo salio bien tanto en el paso de arriba como abriendolo les debe de aparecer algo 
+asi en la terminal 
+(venv) C:\Users\César D. Rodríguez\Documents\CMMS Cucei>
+chequen que salga lo de (venv) antes 
