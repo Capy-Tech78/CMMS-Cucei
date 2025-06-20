@@ -12,6 +12,7 @@ esto se hace asi, en la terminal
 
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\venv\Scripts\Activate
+cd CMMS
 
 si todo salio bien tanto en el paso de arriba como abriendolo les debe de aparecer algo 
 asi en la terminal 
@@ -23,3 +24,6 @@ python -B manage.py runserver
 y podran entrar a un link parecido a este, igual se ira modificando con el paso del proyecto
 http://127.0.0.1:8000/hola/
 http://127.0.0.1:8000/admin/
+
+python manage.py makemigrations
+python manage.py migrate

@@ -4,3 +4,8 @@ from . import views
 urlpatterns = [
     path('', views.lista_equipos, name='lista_equipos'),  # 👈 la raíz del sitio mostrará la lista
 ]
+
+urlpatterns = [
+    path('', views.lista_equipos, name='lista_equipos'),
+    path('registrar/', views.registrar_equipo, name='registrar_equipo'),
+]
