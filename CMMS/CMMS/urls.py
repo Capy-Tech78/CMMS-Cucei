@@ -17,10 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import CMMS_Lab.urls  # 👈 import explícito para evitar errores de tipo módulo 
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('CMMS_Lab.urls')),  # ✅ Esta es la única línea que necesitas para cargar tus rutas
+    path('', include('CMMS_Lab.urls')),
 ]
 
 if settings.DEBUG:
