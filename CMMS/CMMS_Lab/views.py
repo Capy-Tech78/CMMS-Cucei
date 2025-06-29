@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
+from .forms import EquipoMedicoForm
 from django.http import HttpResponse
 from .models import EquipoMedico, PerfilUsuario
 from .forms import FormularioLogin, EquipoMedicoForm
@@ -16,14 +17,11 @@ def lista_equipos(request):
 def lista_biomedicos(request):
     biomedicos = PerfilUsuario.objects.filter(rol='biomedico')
     return render(request, 'biomedicos.html', {'biomedicos': biomedicos})
+=======
 
-# Vista para registrar equipo médico (solo biomédicos)
-@login_required
-def registrar_equipo(request):
-    try:
-        perfil = PerfilUsuario.objects.get(user=request.user)
-    except PerfilUsuario.DoesNotExist:
-        return redirect('lista_equipos')
+def lista_equipos(request):
+    equipos = EquipoMedico.objects.all()
+    return render(request, 'equipos/lista.html', {'equipos': equipos})
 
     if perfil.rol != 'biomedico':
         return redirect('lista_equipos')
