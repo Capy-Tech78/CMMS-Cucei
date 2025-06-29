@@ -1,4 +1,4 @@
-# Ignorar entorno virtual
+# Ignorar entorno virtual 
 venv/
 
 # Archivos temporales de Python
@@ -6,7 +6,7 @@ __pycache__/
 *.pyc
 
 # Base de datos local
-CMMS/db.sqlite3
+*.sqlite3
 
 # Archivos de entorno opcionales
 .env
@@ -14,3 +14,4 @@ CMMS/db.sqlite3
 # Archivos del sistema
 *.log
 .DS_Store
+
