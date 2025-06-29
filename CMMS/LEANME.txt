@@ -17,3 +17,4 @@ si todo salio bien tanto en el paso de arriba como abriendolo les debe de aparec
 asi en la terminal 
 (venv) C:\Users\César D. Rodríguez\Documents\CMMS Cucei>
 chequen que salga lo de (venv) antes 
+.
