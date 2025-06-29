@@ -17,7 +17,6 @@ def lista_equipos(request):
 def lista_biomedicos(request):
     biomedicos = PerfilUsuario.objects.filter(rol='biomedico')
     return render(request, 'biomedicos.html', {'biomedicos': biomedicos})
-=======
 
 def lista_equipos(request):
     equipos = EquipoMedico.objects.all()
