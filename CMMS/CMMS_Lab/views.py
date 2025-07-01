@@ -1,12 +1,35 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .forms import EquipoMedicoForm, FormularioLogin
+from .forms import EquipoMedicoForm, FormularioLogin, RegistroBiomedicoForm
 from .models import EquipoMedico, PerfilUsuario
 
 # Vista para mostrar los equipos médicos
 @login_required
+def registrar_biomedico(request):
+    if not request.user.perfilusuario.rol == 'biomedico':
+        return redirect('lista_equipos')  # protección
+
+    if request.method == 'POST':
+        form = RegistroBiomedicoForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+            PerfilUsuario.objects.create(
+                user=user,
+                rol='biomedico',
+                matricula=form.cleaned_data.get('matricula'),
+                telefono=form.cleaned_data.get('telefono'),
+                especialidad=form.cleaned_data.get('especialidad')
+            )
+            return redirect('lista_equipos')  # o alguna confirmación
+    else:
+        form = RegistroBiomedicoForm()
+
+    return render(request, 'usuarios/registrar_biomedico.html', {'form': form})
+
 def lista_equipos(request):
     equipos = EquipoMedico.objects.all()
     return render(request, 'equipos/lista.html', {'equipos': equipos})

@@ -1,7 +1,9 @@
 from django import forms
 from .models import EquipoMedico
-from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from .models import PerfilUsuario
 
 class FormularioLogin(AuthenticationForm):
     username = forms.CharField(label='Nombre de usuario', widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -32,3 +34,19 @@ class EquipoMedicoForm(forms.ModelForm):
             'mantenimiento_preventivo': 'Próximo mantenimiento preventivo',
             'imagen': 'Imagen del equipo',
         }
+
+    class RegistroBiomedicoForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    matricula = forms.CharField(required=False)
+    telefono = forms.CharField(required=False)
+    especialidad = forms.CharField(required=False)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+
+def clean_matricula(self):
+    matricula = self.cleaned_data['matricula']
+    if PerfilUsuario.objects.filter(matricula=matricula).exists():
+        raise forms.ValidationError("Esta matrícula ya está registrada.")
+    return matricula

@@ -21,6 +21,13 @@
                             <button type="submit" class="btn btn-link nav-link" style="padding: 0;">Cerrar sesión</button>
                         </form>
                     </li>
+
+                {% if user.perfilusuario.rol == 'biomedico' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'registrar_biomedico' %}">Registrar biomédico</a>
+                    </li>
+                {% endif %}
+
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
