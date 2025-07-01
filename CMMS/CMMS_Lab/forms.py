@@ -35,7 +35,7 @@ class EquipoMedicoForm(forms.ModelForm):
             'imagen': 'Imagen del equipo',
         }
 
-    class RegistroBiomedicoForm(UserCreationForm):
+class RegistroBiomedicoForm(UserCreationForm):
     email = forms.EmailField(required=True)
     matricula = forms.CharField(required=False)
     telefono = forms.CharField(required=False)
@@ -44,6 +44,12 @@ class EquipoMedicoForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+        labels = {
+            'username': 'Nombre de usuario',
+            'email': 'Correo electrónico',
+            'password1': 'Contraseña',
+            'password2': 'Confirmar contraseña',
+        }
 
 def clean_matricula(self):
     matricula = self.cleaned_data['matricula']
