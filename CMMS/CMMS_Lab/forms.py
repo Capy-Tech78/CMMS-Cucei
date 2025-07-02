@@ -36,10 +36,10 @@ class EquipoMedicoForm(forms.ModelForm):
         }
 
 class RegistroBiomedicoForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-    matricula = forms.CharField(required=False)
-    telefono = forms.CharField(required=False)
-    especialidad = forms.CharField(required=False)
+    email = forms.EmailField(required=True, label='Correo electrónico')
+    matricula = forms.CharField(required=True, label='Matrícula')
+    telefono = forms.CharField(required=False, label='Teléfono')
+    especialidad = forms.CharField(required=False, label='Especialidad')
 
     class Meta:
         model = User
@@ -51,8 +51,14 @@ class RegistroBiomedicoForm(UserCreationForm):
             'password2': 'Confirmar contraseña',
         }
 
+def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Este nombre de usuario ya está en uso.")
+        return username
+
 def clean_matricula(self):
-    matricula = self.cleaned_data['matricula']
-    if PerfilUsuario.objects.filter(matricula=matricula).exists():
-        raise forms.ValidationError("Esta matrícula ya está registrada.")
-    return matricula
+        matricula = self.cleaned_data.get('matricula')
+        if PerfilUsuario.objects.filter(matricula=matricula).exists():
+            raise forms.ValidationError("Esta matrícula ya está registrada.")
+        return matricula
