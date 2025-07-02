@@ -40,6 +40,7 @@ class RegistroBiomedicoForm(UserCreationForm):
     matricula = forms.CharField(required=True, label='Matrícula')
     telefono = forms.CharField(required=False, label='Teléfono')
     especialidad = forms.CharField(required=False, label='Especialidad')
+    rol = forms.ChoiceField(choices=PerfilUsuario._meta.get_field('rol').choices)
 
     class Meta:
         model = User

@@ -19,7 +19,7 @@ def registrar_biomedico(request):
             user.save()
             PerfilUsuario.objects.create(
                 user=user,
-                rol='biomedico',
+                rol=form.cleaned_data.get('rol'),
                 matricula=form.cleaned_data.get('matricula'),
                 telefono=form.cleaned_data.get('telefono'),
                 especialidad=form.cleaned_data.get('especialidad')

@@ -87,5 +87,8 @@
 </html>
 
 {% if user.is_authenticated and user.perfilusuario.rol == 'biomedico' %}
-    <a href="{% url 'registrar_equipo' %}" class="btn btn-success mb-3">Registrar Nuevo Equipo</a>
+    <div class="mb-3">
+        <a href="{% url 'registrar_equipo' %}" class="btn btn-azul-claro me-2">Registrar Nuevo Equipo</a>
+        <a href="{% url 'registrar_biomedico' %}" class="btn btn-azul-claro">Registrar Usuario</a>
+    </div>
 {% endif %}
