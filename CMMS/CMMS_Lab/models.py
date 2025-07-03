@@ -32,6 +32,7 @@ class PerfilUsuario(models.Model):
     rol = models.CharField(max_length=20, choices=[
         ('estudiante', 'Estudiante'),
         ('biomedico', 'Biomedico'),
+        ('admin_sistema', 'Administrador del sistema'),
     ])
     matricula = models.CharField(max_length=20, blank=True, null=True)
     telefono = models.CharField(max_length=15, blank=True, null=True)

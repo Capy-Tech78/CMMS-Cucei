@@ -4,7 +4,30 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import EquipoMedicoForm, FormularioLogin, RegistroBiomedicoForm
-from .models import EquipoMedico, PerfilUsuario
+from .models import EquipoMedico, PerfilUsuario, FalloReportado, HorarioBiomedico, ReservaEquipo
+
+@login_required
+def dashboard(request):
+    perfil = request.user.perfilusuario
+
+    # Acceso restringido al dashboard solo a admin_sistema
+    if perfil.rol != 'admin_sistema':
+        return render(request, 'acceso_denegado.html')
+
+    total_usuarios = PerfilUsuario.objects.count()
+    total_equipos = EquipoMedico.objects.count()
+    total_fallos = FalloReportado.objects.count()
+    total_horarios = HorarioBiomedico.objects.count()
+    total_reservas = ReservaEquipo.objects.count()
+
+    return render(request, 'dashboard.html', {
+        'total_usuarios': total_usuarios,
+        'total_equipos': total_equipos,
+        'total_fallos': total_fallos,
+        'total_horarios': total_horarios,
+        'total_reservas': total_reservas,
+    })
+
 
 # Vista para mostrar los equipos médicos
 @login_required

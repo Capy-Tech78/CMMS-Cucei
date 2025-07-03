@@ -7,4 +7,4 @@ from .models import PerfilUsuario
 def crear_perfil_usuario(sender, instance, created, **kwargs):
     if created:
         if instance.is_superuser:
-            PerfilUsuario.objects.create(user=instance, rol='biomedico')
+            PerfilUsuario.objects.create(user=instance, rol='admin_sistema')
