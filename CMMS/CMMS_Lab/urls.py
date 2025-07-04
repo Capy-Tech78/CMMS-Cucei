@@ -5,8 +5,11 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    # Vista principal tipo dashboard
-    path('', views.dashboard, name='dashboard'),
+    # Página pública de bienvenida
+    path('', views.inicio_publico, name='inicio_publico'),
+
+    # Dashboard después de iniciar sesión
+    path('dashboard/', views.dashboard, name='dashboard'),
 
     # Autenticación y gestión de usuarios
     path('login/', views.login_view, name='login'),

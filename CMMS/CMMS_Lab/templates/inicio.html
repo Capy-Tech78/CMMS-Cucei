@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f7fafd;
+    }
+
+    .hero {
+        text-align: center;
+        padding: 6rem 1rem;
+        background: linear-gradient(120deg, #e0f7ff, #ffffff);
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+        color: #0066cc;
+        font-weight: 700;
+    }
+
+    .hero p {
+        font-size: 1.25rem;
+        color: #333;
+        margin-top: 1rem;
+    }
+
+    .btn-iniciar {
+        background-color: #5bc0de;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        margin-top: 2rem;
+        font-size: 1rem;
+        border-radius: 0.5rem;
+    }
+
+    .btn-iniciar:hover {
+        background-color: #31b0d5;
+    }
+</style>
+
+<div class="hero">
+    <h1>CMMS Hospitalario</h1>
+    <p>Gestión inteligente de mantenimiento, usuarios y equipos médicos.</p>
+    
+    {% if not user.is_authenticated %}
+        <a href="{% url 'login' %}" class="btn btn-iniciar">Iniciar sesión</a>
+    {% endif %}
+</div>
+{% endblock %}
