@@ -27,27 +27,24 @@ urlpatterns = [
 
     # Fallos Reportados
     path('fallos/', views.lista_fallos, name='lista_fallos'),
+    path('fallos/crear/', views.crear_fallo, name='crear_fallo'),
     path('fallos/editar/<int:fallo_id>/', views.editar_fallo, name='editar_fallo'),
 
     # Horarios de Biomédicos
     path('horarios/', views.lista_horarios, name='lista_horarios'),
+    path('horarios/crear/', views.crear_horario, name='crear_horario'),
     path('horarios/editar/<int:horario_id>/', views.editar_horario, name='editar_horario'),
 
     # Reservas de Equipo
     path('reservas/', views.lista_reservas, name='lista_reservas'),
+    path('reservas/crear/', views.crear_reserva, name='crear_reserva'),
     path('reservas/editar/<int:reserva_id>/', views.editar_reserva, name='editar_reserva'),
 
-        # Rutas faltantes para vista del dashboard
+    # Vista del dashboard
     path('usuarios/ver/', views.lista_usuarios, name='ver_usuarios'),
-
     path('fallos/ver/', views.lista_fallos, name='ver_fallos'),
     path('horarios/ver/', views.lista_horarios, name='ver_horarios'),
     path('reservas/ver/', views.lista_reservas, name='ver_reservas'),
-
-    # Otras rutas para creación
-    path('fallos/crear/', views.crear_fallo, name='crear_fallo'),
-    path('horarios/crear/', views.crear_horario, name='crear_horario'),
-    path('reservas/crear/', views.crear_reserva, name='crear_reserva'),
 
 ]
 
