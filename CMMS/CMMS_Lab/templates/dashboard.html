@@ -2,58 +2,101 @@
 
 {% block content %}
 <div class="text-center mb-5">
-    <h1 class="display-4">Panel Administrativo</h1>
+    <h1 class="display-4">Panel de Control</h1>
     <p class="lead">Bienvenido al sistema de gestión CMMS</p>
 </div>
 
-<div class="row text-center">
-    <div class="col-md-4 mb-4">
-        <div class="card shadow-sm rounded-4">
-            <div class="card-body">
-                <h5 class="card-title">Usuarios</h5>
-                <p class="card-text fs-3">{{ total_usuarios }}</p>
-                <a href="{% url 'ver_usuarios' %}" class="btn btn-outline-primary">Ver usuarios</a>
+{% if request.user.perfilusuario.rol == 'admin_sistema' %}
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm rounded-4">
+                <div class="card-body">
+                    <h5 class="card-title">Usuarios</h5>
+                    <p class="card-text fs-3">{{ total_usuarios }}</p>
+                    <a href="{% url 'ver_usuarios' %}" class="btn btn-outline-primary">Ver usuarios</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm rounded-4">
+                <div class="card-body">
+                    <h5 class="card-title">Equipos Médicos</h5>
+                    <p class="card-text fs-3">{{ total_equipos }}</p>
+                    <a href="{% url 'lista_equipos' %}" class="btn btn-outline-primary">Ver equipos</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm rounded-4">
+                <div class="card-body">
+                    <h5 class="card-title">Fallos Reportados</h5>
+                    <p class="card-text fs-3">{{ total_fallos }}</p>
+                    <a href="{% url 'ver_fallos' %}" class="btn btn-outline-primary">Ver fallos</a>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-4">
-        <div class="card shadow-sm rounded-4">
-            <div class="card-body">
-                <h5 class="card-title">Equipos Médicos</h5>
-                <p class="card-text fs-3">{{ total_equipos }}</p>
-                <a href="{% url 'lista_equipos' %}" class="btn btn-outline-primary">Ver equipos</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-4">
-        <div class="card shadow-sm rounded-4">
-            <div class="card-body">
-                <h5 class="card-title">Fallos Reportados</h5>
-                <p class="card-text fs-3">{{ total_fallos }}</p>
-                <a href="{% url 'ver_fallos' %}" class="btn btn-outline-primary">Ver fallos</a>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="row text-center">
-    <div class="col-md-6 mb-4">
-        <div class="card shadow-sm rounded-4">
-            <div class="card-body">
-                <h5 class="card-title">Horarios Biomédicos</h5>
-                <p class="card-text fs-3">{{ total_horarios }}</p>
-                <a href="{% url 'ver_horarios' %}" class="btn btn-outline-primary">Ver horarios</a>
+    <div class="row text-center">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm rounded-4">
+                <div class="card-body">
+                    <h5 class="card-title">Horarios Biomédicos</h5>
+                    <p class="card-text fs-3">{{ total_horarios }}</p>
+                    <a href="{% url 'ver_horarios' %}" class="btn btn-outline-primary">Ver horarios</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm rounded-4">
+                <div class="card-body">
+                    <h5 class="card-title">Reservas de Equipos</h5>
+                    <p class="card-text fs-3">{{ total_reservas }}</p>
+                    <a href="{% url 'ver_reservas' %}" class="btn btn-outline-primary">Ver reservas</a>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-6 mb-4">
-        <div class="card shadow-sm rounded-4">
-            <div class="card-body">
-                <h5 class="card-title">Reservas de Equipos</h5>
-                <p class="card-text fs-3">{{ total_reservas }}</p>
-                <a href="{% url 'ver_reservas' %}" class="btn btn-outline-primary">Ver reservas</a>
+
+{% elif request.user.perfilusuario.rol == 'biomedico' %}
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm rounded-4">
+                <div class="card-body">
+                    <h5 class="card-title">Registrar Equipo</h5>
+                    <a href="{% url 'registrar_equipo' %}" class="btn btn-outline-success">Registrar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm rounded-4">
+                <div class="card-body">
+                    <h5 class="card-title">Reportar Fallo</h5>
+                    <a href="{% url 'crear_fallo' %}" class="btn btn-outline-warning">Reportar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm rounded-4">
+                <div class="card-body">
+                    <h5 class="card-title">Registrar Horario</h5>
+                    <a href="{% url 'crear_horario' %}" class="btn btn-outline-info">Agregar</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+{% elif request.user.perfilusuario.rol == 'estudiante' %}
+    <div class="row text-center">
+        <div class="col-md-6 offset-md-3 mb-4">
+            <div class="card shadow-sm rounded-4">
+                <div class="card-body">
+                    <h5 class="card-title">Reservar Equipo</h5>
+                    <a href="{% url 'crear_reserva' %}" class="btn btn-outline-primary">Reservar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
 {% endblock %}

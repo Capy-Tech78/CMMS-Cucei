@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
@@ -7,7 +7,6 @@ from .forms import EquipoMedicoForm, FormularioLogin, RegistroBiomedicoForm
 from .models import EquipoMedico, PerfilUsuario, FalloReportado, HorarioBiomedico, ReservaEquipo
 
 # Vista pública de inicio
-
 def inicio_publico(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
@@ -32,8 +31,8 @@ def dashboard(request):
             'total_horarios': total_horarios,
             'total_reservas': total_reservas,
         })
-    else:
-        return redirect('lista_equipos')
+    
+    return render(request, 'dashboard.html')
 
 # Vista para mostrar los equipos médicos
 @login_required
@@ -84,7 +83,6 @@ def registrar_biomedico(request):
     return render(request, 'usuarios/registrar_biomedico.html', {'form': form})
 
 # Vista personalizada para el login
-
 def login_view(request):
     if request.method == 'POST':
         form = FormularioLogin(request, data=request.POST)
@@ -101,3 +99,51 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('inicio_publico')
+
+# ---------------------------
+# NUEVAS VISTAS AÑADIDAS 
+# ---------------------------
+
+# Lista de usuarios
+@login_required
+def lista_usuarios(request):
+    if request.user.perfilusuario.rol != 'admin_sistema':
+        return redirect('dashboard')
+    usuarios = PerfilUsuario.objects.all()
+    return render(request, 'usuarios/lista.html', {'usuarios': usuarios})
+
+# Lista de fallos reportados
+@login_required
+def lista_fallos(request):
+    fallos = FalloReportado.objects.all()
+    return render(request, 'fallos/lista.html', {'fallos': fallos})
+
+# Lista de horarios biomédicos
+@login_required
+def lista_horarios(request):
+    horarios = HorarioBiomedico.objects.all()
+    return render(request, 'horarios/lista.html', {'horarios': horarios})
+
+# Lista de reservas de equipos
+@login_required
+def lista_reservas(request):
+    reservas = ReservaEquipo.objects.all()
+    return render(request, 'reservas/lista.html', {'reservas': reservas})
+
+# Vista para crear un fallo reportado
+@login_required
+def crear_fallo(request):
+    # (formulario aún no creado, por ahora solo pantalla de prueba)
+    return render(request, 'fallos/crear.html')
+
+# Vista para crear horario
+@login_required
+def crear_horario(request):
+    # (formulario aún no creado, por ahora solo pantalla de prueba)
+    return render(request, 'horarios/crear.html')
+
+# Vista para crear reserva
+@login_required
+def crear_reserva(request):
+    # (formulario aún no creado, por ahora solo pantalla de prueba)
+    return render(request, 'reservas/crear.html')
