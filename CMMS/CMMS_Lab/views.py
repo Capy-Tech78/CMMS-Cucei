@@ -16,23 +16,22 @@ def inicio_publico(request):
 @login_required
 def dashboard(request):
     perfil = request.user.perfilusuario
+    rol = perfil.rol
 
-    if perfil.rol == 'admin_sistema':
-        total_usuarios = PerfilUsuario.objects.count()
-        total_equipos = EquipoMedico.objects.count()
-        total_fallos = FalloReportado.objects.count()
-        total_horarios = HorarioBiomedico.objects.count()
-        total_reservas = ReservaEquipo.objects.count()
+    context = {
+        'rol': rol  # esto se puede usar en el template directamente
+    }
 
-        return render(request, 'dashboard.html', {
-            'total_usuarios': total_usuarios,
-            'total_equipos': total_equipos,
-            'total_fallos': total_fallos,
-            'total_horarios': total_horarios,
-            'total_reservas': total_reservas,
+    if rol == 'admin_sistema':
+        context.update({
+            'total_usuarios': PerfilUsuario.objects.count(),
+            'total_equipos': EquipoMedico.objects.count(),
+            'total_fallos': FalloReportado.objects.count(),
+            'total_horarios': HorarioBiomedico.objects.count(),
+            'total_reservas': ReservaEquipo.objects.count(),
         })
-    
-    return render(request, 'dashboard.html')
+
+    return render(request, 'dashboard.html', context) # Retorna siempre el mismo template y un solo diccionario 'context'
 
 # Vista personalizada para el login
 def login_view(request):
@@ -59,6 +58,15 @@ def lista_usuarios(request):
         return redirect('dashboard')
     usuarios = PerfilUsuario.objects.all()
     return render(request, 'usuarios/lista.html', {'usuarios': usuarios})
+
+# Lista de usuarios pero solo con nombre y matricula, solo para biomedicos 
+@login_required
+def ver_usuarios_biomedico(request):
+    if request.user.perfilusuario.rol != 'biomedico':
+        return redirect('dashboard')
+
+    perfiles = PerfilUsuario.objects.select_related('user')
+    return render(request, 'usuarios/ver_limitado.html', {'perfiles': perfiles})
 
 # Lista de equipos médicos
 @login_required

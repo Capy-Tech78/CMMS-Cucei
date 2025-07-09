@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Usuarios Registrados</h2>
+    <p class="text-muted">Solo se muestran nombre de usuario y matrícula.</p>
+
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Nombre de usuario</th>
+                <th>Matrícula</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for perfil in perfiles %}
+            <tr>
+                <td>{{ perfil.user.username }}</td>
+                <td>{{ perfil.matricula }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

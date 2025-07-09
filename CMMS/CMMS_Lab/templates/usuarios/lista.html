@@ -3,6 +3,12 @@
 <div class="container">
     <h2 class="mb-4">Lista de Usuarios Registrados</h2>
 
+    <div class="mb-3 text-end">
+        <a href="{% url 'registrar_biomedico' %}" class="btn btn-success">
+            + Registrar Nuevo Usuario
+        </a>
+    </div>
+
     {% if usuarios %}
         <table class="table table-bordered table-striped">
             <thead class="table-dark">

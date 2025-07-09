@@ -19,6 +19,8 @@ urlpatterns = [
     # Usuarios (solo admin_sistema)
     path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
     path('usuarios/editar/<int:user_id>/', views.editar_usuario, name='editar_usuario'),
+    # Usuarios (Vista solo biomedico)
+    path('usuarios/ver-biomedico/', views.ver_usuarios_biomedico, name='ver_usuarios_biomedico'),
 
     # Equipos Médicos
     path('equipos/', views.lista_equipos, name='lista_equipos'),
