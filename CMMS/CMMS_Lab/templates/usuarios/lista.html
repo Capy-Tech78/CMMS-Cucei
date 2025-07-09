@@ -2,6 +2,32 @@
 {% block content %}
 <div class="container">
     <h2 class="mb-4">Lista de Usuarios Registrados</h2>
-    <p>Esta sección solo está disponible para usuarios con rol <strong>admin_sistema</strong>.</p>
+
+    {% if usuarios %}
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nombre de usuario</th>
+                    <th>Rol</th>
+                    <th>Matrícula</th>
+                    <th>Especialidad</th>
+                    <th>Teléfono</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for perfil in usuarios %}
+                <tr>
+                    <td>{{ perfil.user.username }}</td>
+                    <td>{{ perfil.rol }}</td>
+                    <td>{{ perfil.matricula }}</td>
+                    <td>{{ perfil.especialidad }}</td>
+                    <td>{{ perfil.telefono }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay usuarios registrados.</p>
+    {% endif %}
 </div>
 {% endblock %}

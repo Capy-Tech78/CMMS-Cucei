@@ -47,8 +47,19 @@
                                 </li>
                             {% endif %}
 
+                            {% if user.perfilusuario.rol == 'biomedico' %}
+                                <!-- Exclusivo para solo biomedico -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'ver_usuarios_biomedico' %}">Usuarios</a>
+                                </li>
+                            {% endif %}
+
+
                             {% if rol == 'admin_sistema' %}
                                 <!-- Exclusivo para admin -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'registrar_biomedico' %}">Registrar Usuario</a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'ver_usuarios' %}">Usuarios</a>
                                 </li>
