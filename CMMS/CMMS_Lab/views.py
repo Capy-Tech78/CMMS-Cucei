@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .forms import EquipoMedicoForm, FormularioLogin, RegistroBiomedicoForm
 from .models import EquipoMedico, PerfilUsuario, FalloReportado, HorarioBiomedico, ReservaEquipo
+from .forms import FalloReportadoForm
 
 # Vista pública de inicio
 def inicio_publico(request):
@@ -137,7 +138,17 @@ def registrar_equipo(request):
 # Crear un fallo reportado
 @login_required
 def crear_fallo(request):
-    return render(request, 'fallos/crear.html')
+    if request.method == 'POST':
+        form = FalloReportadoForm(request.POST)
+        if form.is_valid():
+            fallo = form.save(commit=False)
+            fallo.reportado_por = request.user  # asignamos el usuario actual
+            fallo.save()
+            return redirect('lista_fallos')  # o donde desees redirigir
+    else:
+        form = FalloReportadoForm()
+    
+    return render(request, 'fallos/crear.html', {'form': form})
 
 # Crear horario
 @login_required

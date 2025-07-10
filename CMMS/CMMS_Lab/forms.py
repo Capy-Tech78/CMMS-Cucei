@@ -1,9 +1,10 @@
 from django import forms
-from .models import EquipoMedico
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import EquipoMedico
 from .models import PerfilUsuario
+from .models import FalloReportado
 
 class FormularioLogin(AuthenticationForm):
     username = forms.CharField(label='Nombre de usuario', widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -63,3 +64,15 @@ def clean_matricula(self):
         if PerfilUsuario.objects.filter(matricula=matricula).exists():
             raise forms.ValidationError("Esta matrícula ya está registrada.")
         return matricula
+
+class FalloReportadoForm(forms.ModelForm):
+    class Meta:
+        model = FalloReportado
+        fields = ['equipo', 'descripcion']
+        widgets = {
+            'descripcion': forms.Textarea(attrs={'rows': 4}),
+        }
+        labels = {
+            'equipo': 'Equipo afectado',
+            'descripcion': 'Descripción del fallo',
+        }

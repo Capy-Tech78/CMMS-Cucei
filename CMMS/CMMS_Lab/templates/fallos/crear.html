@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<div class="container">
-    <h2 class="mb-4">Reportar nuevo fallo</h2>
-    <p>Página en construcción. Aquí irá el formulario para reportar fallos.</p>
+<div class="container mt-4">
+    <h2>Reportar un Fallo</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-warning">Reportar</button>
+        <a href="{% url 'lista_fallos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
 </div>
 {% endblock %}
