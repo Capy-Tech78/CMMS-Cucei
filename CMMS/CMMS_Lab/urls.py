@@ -42,12 +42,6 @@ urlpatterns = [
     path('reservas/crear/', views.crear_reserva, name='crear_reserva'),
     path('reservas/editar/<int:reserva_id>/', views.editar_reserva, name='editar_reserva'),
 
-    # Vista del dashboard
-    path('usuarios/ver/', views.lista_usuarios, name='ver_usuarios'),
-    path('fallos/ver/', views.lista_fallos, name='ver_fallos'),
-    path('horarios/ver/', views.lista_horarios, name='ver_horarios'),
-    path('reservas/ver/', views.lista_reservas, name='ver_reservas'),
-
 ]
 
 if settings.DEBUG:

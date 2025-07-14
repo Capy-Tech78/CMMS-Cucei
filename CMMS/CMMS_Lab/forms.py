@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import EquipoMedico
 from .models import PerfilUsuario
 from .models import FalloReportado
+from .models import HorarioBiomedico
 
 class FormularioLogin(AuthenticationForm):
     username = forms.CharField(label='Nombre de usuario', widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -75,4 +76,19 @@ class FalloReportadoForm(forms.ModelForm):
         labels = {
             'equipo': 'Equipo afectado',
             'descripcion': 'Descripción del fallo',
+        }
+
+class HorarioBiomedicoForm(forms.ModelForm):
+    class Meta:
+        model = HorarioBiomedico
+        fields = ['biomedico', 'dia_semana', 'hora_inicio', 'hora_fin']
+        labels = {
+            'biomedico': 'Biomédico',
+            'dia_semana': 'Día de la semana',
+            'hora_inicio': 'Hora de inicio',
+            'hora_fin': 'Hora de fin',
+        }
+        widgets = {
+            'hora_inicio': forms.TimeInput(attrs={'type': 'time'}),
+            'hora_fin': forms.TimeInput(attrs={'type': 'time'}),
         }

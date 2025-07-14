@@ -18,72 +18,79 @@
             <div class="collapse navbar-collapse" id="navbarCMMS">
                 {% if user.is_authenticated %}
                     {% with rol=user.perfilusuario.rol %}
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                            <!-- Acceso común a todos los usuarios -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'lista_equipos' %}">Equipos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'lista_horarios' %}">Horarios</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'lista_reservas' %}">Reservas</a>
-                            </li>
+                        <!-- Dropdown: Equipos -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Equipos</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'lista_equipos' %}">Lista de Equipos</a></li>
+                                {% if rol != 'estudiante' %}
+                                    <li><a class="dropdown-item" href="{% url 'registrar_equipo' %}">Registrar Equipo</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
 
-                            {% if rol == 'biomedico' or rol == 'admin_sistema' %}
-                                <!-- Opciones para biomédicos y admin -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'registrar_equipo' %}">Registrar Equipo</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'crear_fallo' %}">Reportar Fallo</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'crear_horario' %}">Registrar Horario</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'crear_reserva' %}">Reservar Equipo</a>
-                                </li>
-                            {% endif %}
+                        <!-- Dropdown: Fallos -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Fallos</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'ver_fallos' %}">Lista de Fallos</a></li>
+                                {% if rol != 'estudiante' %}
+                                    <li><a class="dropdown-item" href="{% url 'crear_fallo' %}">Reportar Fallo</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
 
-                            {% if user.perfilusuario.rol == 'biomedico' %}
-                                <!-- Exclusivo para solo biomedico -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'ver_usuarios_biomedico' %}">Usuarios</a>
-                                </li>
-                            {% endif %}
+                        {% if rol != 'estudiante' %}
+                        <!-- Dropdown: Horarios -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Horarios</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'lista_horarios' %}">Lista de Horarios</a></li>
+                                <li><a class="dropdown-item" href="{% url 'crear_horario' %}">Registrar Horario</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
 
+                        {% if rol in 'admin_sistema' or rol == 'biomedico' %}
+                        <!-- Dropdown: Reservas -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Reservas</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'lista_reservas' %}">Lista de Reservas</a></li>
+                                <li><a class="dropdown-item" href="{% url 'crear_reserva' %}">Crear Reserva</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
 
-                            {% if rol == 'admin_sistema' %}
-                                <!-- Exclusivo para admin -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'registrar_biomedico' %}">Registrar Usuario</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'ver_usuarios' %}">Usuarios</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'ver_fallos' %}">Fallos</a>
-                                </li>
-                            {% endif %}
-                        </ul>
+                        <!-- Dropdown: Usuarios -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Usuarios</a>
+                            <ul class="dropdown-menu">
+                                {% if rol == 'admin_sistema' %}
+                                    <li><a class="dropdown-item" href="{% url 'ver_usuarios' %}">Lista de Usuarios</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'registrar_biomedico' %}">Registrar Usuario</a></li>
+                                {% elif rol == 'biomedico' %}
+                                    <li><a class="dropdown-item" href="{% url 'ver_usuarios_biomedico' %}">Ver Usuarios (Limitado)</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    </ul>
 
-                        <!-- Lado derecho: usuario y logout -->
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <span class="navbar-text text-white me-3">
-                                    {{ user.username }} ({{ rol|title }})
-                                </span>
-                            </li>
-                            <li class="nav-item">
-                                <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">Cerrar sesión</a>
-                            </li>
-                        </ul>
+                    <!-- Usuario y logout -->
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <span class="navbar-text text-white me-3">
+                                {{ user.username }} ({{ rol|title }})
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">Cerrar sesión</a>
+                        </li>
+                    </ul>
                     {% endwith %}
-
                 {% else %}
-                    <!-- Navbar si NO está logueado -->
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
                             <a class="btn btn-outline-light" href="{% url 'login' %}">Iniciar sesión</a>

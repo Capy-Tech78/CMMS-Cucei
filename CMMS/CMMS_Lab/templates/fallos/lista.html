@@ -2,6 +2,46 @@
 {% block content %}
 <div class="container">
     <h2 class="mb-4">Lista de Fallos Reportados</h2>
-    <p>Aquí aparecerán los fallos reportados por los biomédicos.</p>
+
+    {% if fallos %}
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Equipo</th>
+                    <th>Reportado por</th>
+                    <th>Fecha de Reporte</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fallo in fallos %}
+                <tr>
+                    <td>{{ fallo.equipo.nombre }}</td>
+                    <td>{{ fallo.reportado_por.username }}</td>
+                    <td>{{ fallo.fecha_reporte|date:"d/m/Y H:i" }}</td>
+                    <td>{{ fallo.descripcion }}</td>
+                    <td>
+                        {% if fallo.atendido %}
+                            ✅ Atendido
+                        {% else %}
+                            ❌ Pendiente
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if request.user.perfilusuario.rol == 'admin_sistema' %}
+                            <a href="{% url 'editar_fallo' fallo.id %}" class="btn btn-sm btn-warning">Editar</a>
+                        {% else %}
+                            <span class="text-muted">Solo lectura</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-muted">No hay fallos reportados todavía.</p>
+    {% endif %}
 </div>
 {% endblock %}

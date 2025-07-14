@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<div class="container">
-    <h2 class="mb-4">Registrar nuevo horario</h2>
-    <p>Página en construcción. Aquí irá el formulario para registrar horarios.</p>
+<div class="container mt-4">
+    <h2>Registro de Horarios</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Registrar Horario</button>
+        <a href="{% url 'lista_horarios' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
 </div>
 {% endblock %}

@@ -78,7 +78,7 @@ def lista_equipos(request):
 # Lista de fallos reportados
 @login_required
 def lista_fallos(request):
-    fallos = FalloReportado.objects.all()
+    fallos = FalloReportado.objects.all().order_by('-fecha_reporte')  # Orden de más recientes primero
     return render(request, 'fallos/lista.html', {'fallos': fallos})
 
 # Lista de horarios biomédicos
@@ -142,9 +142,9 @@ def crear_fallo(request):
         form = FalloReportadoForm(request.POST)
         if form.is_valid():
             fallo = form.save(commit=False)
-            fallo.reportado_por = request.user  # asignamos el usuario actual
+            fallo.reportado_por = request.user  # Asigna el usuario que reporta
             fallo.save()
-            return redirect('lista_fallos')  # o donde desees redirigir
+            return redirect('lista_fallos')  # URL
     else:
         form = FalloReportadoForm()
     
@@ -153,7 +153,21 @@ def crear_fallo(request):
 # Crear horario
 @login_required
 def crear_horario(request):
-    return render(request, 'horarios/crear.html')
+    perfil = request.user.perfilusuario
+
+    # Solo admin o biomedico pueden acceder
+    if perfil.rol not in ['admin_sistema', 'biomedico']:
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        form = HorarioBiomedicoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_horarios')
+    else:
+        form = HorarioBiomedicoForm()
+
+    return render(request, 'horarios/crear.html', {'form': form})
 
 # Crear reserva
 @login_required
