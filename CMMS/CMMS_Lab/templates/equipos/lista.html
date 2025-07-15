@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<h2>Lista de Equipos Médicos</h2>
+<div class="container">
+    <h2 class="mb-4">Lista de Equipos Médicos</h2>
 
-{% if user.is_authenticated and user.perfilusuario.rol == 'biomedico' %}
-    <div class="mb-3">
-        <a href="{% url 'registrar_equipo' %}" class="btn btn-azul-claro me-2">Registrar Nuevo Equipo</a>
-        <a href="{% url 'registrar_biomedico' %}" class="btn btn-azul-claro">Registrar Usuario</a>
+    <div class="mb-3 text-end">
+        <a href="{% url 'registrar_equipo' %}" class="btn btn-success">
+            + Registrar Nuevo Equipo
+        </a>
     </div>
-{% endif %}
 
 <table class="table table-striped table-bordered">
     <thead class="table-dark">
@@ -50,4 +49,5 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 {% endblock %}

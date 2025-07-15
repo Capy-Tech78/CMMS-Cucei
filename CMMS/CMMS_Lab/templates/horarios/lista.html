@@ -2,6 +2,38 @@
 {% block content %}
 <div class="container">
     <h2 class="mb-4">Horarios de Biomédicos</h2>
-    <p>Aquí se mostrarán los horarios registrados por los biomédicos.</p>
+
+    {% if horarios %}
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Biomédico</th>
+                    <th>Día</th>
+                    <th>Hora Inicio</th>
+                    <th>Hora Fin</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for horario in horarios %}
+                <tr>
+                    <td>{{ horario.biomedico.username }}</td>
+                    <td>{{ horario.dia_semana|title }}</td>
+                    <td>{{ horario.hora_inicio }}</td>
+                    <td>{{ horario.hora_fin }}</td>
+                    <td>
+                        {% if request.user.perfilusuario.rol == 'admin_sistema' %}
+                            <a href="{% url 'editar_horario' horario.id %}" class="btn btn-sm btn-warning">Editar</a>
+                        {% else %}
+                            <span class="text-muted">Solo lectura</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-muted">No hay horarios registrados.</p>
+    {% endif %}
 </div>
 {% endblock %}

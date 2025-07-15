@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container">
-    <h2>Editar Horario Biomédico</h2>
-    <p>Página en construcción. Aquí podrás editar el horario registrado.</p>
+    <h2 class="mb-4">Editar Horario</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Guardar cambios</button>
+    </form>
 </div>
 {% endblock %}

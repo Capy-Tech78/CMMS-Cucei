@@ -3,9 +3,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .forms import EquipoMedicoForm, FormularioLogin, RegistroBiomedicoForm
 from .models import EquipoMedico, PerfilUsuario, FalloReportado, HorarioBiomedico, ReservaEquipo
-from .forms import FalloReportadoForm
+from .forms import EquipoMedicoForm, FormularioLogin, RegistroBiomedicoForm
+from .forms import FalloReportadoForm, HorarioBiomedicoForm
 
 # Vista pública de inicio
 def inicio_publico(request):
@@ -84,7 +84,7 @@ def lista_fallos(request):
 # Lista de horarios biomédicos
 @login_required
 def lista_horarios(request):
-    horarios = HorarioBiomedico.objects.all()
+    horarios = HorarioBiomedico.objects.select_related('biomedico').order_by('dia_semana', 'hora_inicio')
     return render(request, 'horarios/lista.html', {'horarios': horarios})
 
 # Lista de reservas de equipos
@@ -196,20 +196,42 @@ def editar_equipo(request, equipo_id):
 # Editar fallo
 @login_required
 def editar_fallo(request, fallo_id):
-    if request.user.perfilusuario.rol != 'admin_sistema':
-        return redirect('dashboard')
-
     fallo = get_object_or_404(FalloReportado, id=fallo_id)
-    return render(request, 'fallos/editar.html', {'fallo': fallo})
+
+    if request.user.perfilusuario.rol != 'admin_sistema':
+        return redirect('lista_fallos')  # o mostrar error
+
+    if request.method == 'POST':
+        form = FalloReportadoForm(request.POST, instance=fallo)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_fallos')
+    else:
+        form = FalloReportadoForm(instance=fallo)
+
+    return render(request, 'fallos/editar.html', {'form': form, 'fallo': fallo})
 
 # Editar horario
 @login_required
 def editar_horario(request, horario_id):
-    if request.user.perfilusuario.rol != 'admin_sistema':
+    # Verificar rol
+    if request.user.perfilusuario.rol not in ['admin_sistema', 'biomedico']:
         return redirect('dashboard')
 
+    # Obtener el horario o dar 404 si no existe
     horario = get_object_or_404(HorarioBiomedico, id=horario_id)
-    return render(request, 'horarios/editar.html', {'horario': horario})
+
+    # Crear formulario con datos existentes
+    form = HorarioBiomedicoForm(request.POST or None, instance=horario)
+
+    # Procesar envío de formulario
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('lista_horarios')
+
+    # 🔹 Renderizar template
+    return render(request, 'horarios/editar.html', {'form': form})
 
 # Editar reserva
 @login_required

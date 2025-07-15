@@ -2,10 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import EquipoMedico
-from .models import PerfilUsuario
-from .models import FalloReportado
-from .models import HorarioBiomedico
+from .models import EquipoMedico, PerfilUsuario, FalloReportado, HorarioBiomedico
 
 class FormularioLogin(AuthenticationForm):
     username = forms.CharField(label='Nombre de usuario', widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -69,13 +66,14 @@ def clean_matricula(self):
 class FalloReportadoForm(forms.ModelForm):
     class Meta:
         model = FalloReportado
-        fields = ['equipo', 'descripcion']
-        widgets = {
-            'descripcion': forms.Textarea(attrs={'rows': 4}),
-        }
+        fields = ['equipo', 'descripcion', 'atendido'] 
         labels = {
             'equipo': 'Equipo afectado',
             'descripcion': 'Descripción del fallo',
+            'atendido': '¿Atendido?',
+        }
+        widgets = {
+            'descripcion': forms.Textarea(attrs={'rows': 4}),
         }
 
 class HorarioBiomedicoForm(forms.ModelForm):
@@ -89,6 +87,7 @@ class HorarioBiomedicoForm(forms.ModelForm):
             'hora_fin': 'Hora de fin',
         }
         widgets = {
+            'dia_semana': forms.Select(),
             'hora_inicio': forms.TimeInput(attrs={'type': 'time'}),
             'hora_fin': forms.TimeInput(attrs={'type': 'time'}),
         }
