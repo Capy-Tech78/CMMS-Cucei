@@ -90,7 +90,7 @@ def lista_horarios(request):
 # Lista de reservas de equipos
 @login_required
 def lista_reservas(request):
-    reservas = ReservaEquipo.objects.all()
+    reservas = ReservaEquipo.objects.select_related('equipo', 'usuario').order_by('-fecha_reserva', '-hora_inicio')
     return render(request, 'reservas/lista.html', {'reservas': reservas})
 
 # Registrar un usuario
@@ -172,7 +172,20 @@ def crear_horario(request):
 # Crear reserva
 @login_required
 def crear_reserva(request):
-    return render(request, 'reservas/crear.html')
+    # Si quieres restringir a admin y biomédico:
+    if request.user.perfilusuario.rol not in ['admin_sistema', 'biomedico']:
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        form = ReservaEquipoForm(request.POST)
+        if form.is_valid():
+            reserva = form.save(commit=False)
+            reserva.usuario = request.user
+            reserva.save()
+            return redirect('lista_reservas')
+    else:
+        form = ReservaEquipoForm()
+    return render(request, 'reservas/crear.html', {'form': form})
 
 # Editar usuario
 @login_required
@@ -230,14 +243,19 @@ def editar_horario(request, horario_id):
             form.save()
             return redirect('lista_horarios')
 
-    # 🔹 Renderizar template
+    # Renderizar template
     return render(request, 'horarios/editar.html', {'form': form})
 
 # Editar reserva
 @login_required
 def editar_reserva(request, reserva_id):
-    if request.user.perfilusuario.rol != 'admin_sistema':
+    if request.user.perfilusuario.rol not in ['admin_sistema', 'biomedico']:
         return redirect('dashboard')
 
     reserva = get_object_or_404(ReservaEquipo, id=reserva_id)
-    return render(request, 'reservas/editar.html', {'reserva': reserva})
+    form = ReservaEquipoForm(request.POST or None, instance=reserva)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('lista_reservas')
+    return render(request, 'reservas/editar.html', {'form': form})

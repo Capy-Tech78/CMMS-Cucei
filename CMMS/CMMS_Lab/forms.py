@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import EquipoMedico, PerfilUsuario, FalloReportado, HorarioBiomedico
+from .models import EquipoMedico, PerfilUsuario, FalloReportado, HorarioBiomedico, ReservaEquipo
 
 class FormularioLogin(AuthenticationForm):
     username = forms.CharField(label='Nombre de usuario', widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -90,4 +90,22 @@ class HorarioBiomedicoForm(forms.ModelForm):
             'dia_semana': forms.Select(),
             'hora_inicio': forms.TimeInput(attrs={'type': 'time'}),
             'hora_fin': forms.TimeInput(attrs={'type': 'time'}),
+        }
+
+class ReservaEquipoForm(forms.ModelForm):
+    class Meta:
+        model = ReservaEquipo
+        fields = ['equipo', 'fecha_reserva', 'hora_inicio', 'hora_fin', 'motivo']
+        widgets = {
+            'fecha_reserva': forms.DateInput(attrs={'type': 'date'}),
+            'hora_inicio': forms.TimeInput(attrs={'type': 'time'}),
+            'hora_fin': forms.TimeInput(attrs={'type': 'time'}),
+            'motivo': forms.Textarea(attrs={'rows': 3}),
+        }
+        labels = {
+            'equipo': 'Equipo a reservar',
+            'fecha_reserva': 'Fecha de reserva',
+            'hora_inicio': 'Hora de inicio',
+            'hora_fin': 'Hora de fin',
+            'motivo': 'Motivo',
         }
