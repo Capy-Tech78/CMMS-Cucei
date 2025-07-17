@@ -26,10 +26,8 @@
                     <td>{{ reserva.hora_fin }}</td>
                     <td>{{ reserva.motivo }}</td>
                     <td>
-                        {% if request.user.perfilusuario.rol in 'admin_sistema' or request.user.perfilusuario.rol == 'biomedico' %}
+                        {% if request.user.perfilusuario.rol == 'admin_sistema' %}
                             <a href="{% url 'editar_reserva' reserva.id %}" class="btn btn-sm btn-warning">Editar</a>
-                        {% else %}
-                            <span class="text-muted">Solo lectura</span>
                         {% endif %}
                     </td>
                 </tr>

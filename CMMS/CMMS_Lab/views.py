@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import EquipoMedico, PerfilUsuario, FalloReportado, HorarioBiomedico, ReservaEquipo
 from .forms import EquipoMedicoForm, FormularioLogin, RegistroBiomedicoForm
-from .forms import FalloReportadoForm, HorarioBiomedicoForm
+from .forms import FalloReportadoForm, HorarioBiomedicoForm, ReservaEquipoForm
 
 # Vista pública de inicio
 def inicio_publico(request):
@@ -96,24 +96,44 @@ def lista_reservas(request):
 # Registrar un usuario
 @login_required
 def registrar_biomedico(request):
-    if not request.user.perfilusuario.rol == 'admin_sistema':
+    # Permitir acceso a admin y biomedico
+    if request.user.perfilusuario.rol not in ['admin_sistema', 'biomedico']:
         return redirect('dashboard')
 
     if request.method == 'POST':
         form = RegistroBiomedicoForm(request.POST)
+
+        # Antes de validar, Se limitan las opciones si no es admin
+        if request.user.perfilusuario.rol != 'admin_sistema':
+            form.fields['rol'].choices = [
+                ('estudiante', 'Estudiante'),
+                ('biomedico', 'Biomedico'),
+            ]
+
         if form.is_valid():
-            user = form.save(commit=False)
-            user.save()
-            PerfilUsuario.objects.create(
-                user=user,
-                rol=form.cleaned_data.get('rol'),
-                matricula=form.cleaned_data.get('matricula'),
-                telefono=form.cleaned_data.get('telefono'),
-                especialidad=form.cleaned_data.get('especialidad')
-            )
-            return redirect('lista_usuarios')
+            # Validación extra por seguridad: evitar que un biomédico cree un admin
+            rol_seleccionado = form.cleaned_data.get('rol')
+            if request.user.perfilusuario.rol != 'admin_sistema' and rol_seleccionado == 'admin_sistema':
+                form.add_error('rol', 'No tienes permisos para asignar rol de administrador.')
+            else:
+                user = form.save(commit=False)
+                user.save()
+                PerfilUsuario.objects.create(
+                    user=user,
+                    rol=rol_seleccionado,
+                    matricula=form.cleaned_data.get('matricula'),
+                    telefono=form.cleaned_data.get('telefono'),
+                    especialidad=form.cleaned_data.get('especialidad')
+                )
+                return redirect('lista_usuarios')
     else:
         form = RegistroBiomedicoForm()
+        if request.user.perfilusuario.rol != 'admin_sistema':
+            # Limitar opciones si no es admin
+            form.fields['rol'].choices = [
+                ('estudiante', 'Estudiante'),
+                ('biomedico', 'Biomedico'),
+            ]
 
     return render(request, 'usuarios/registrar_biomedico.html', {'form': form})
 
