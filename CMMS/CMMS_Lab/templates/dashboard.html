@@ -62,14 +62,53 @@
 
     {% elif rol == 'biomedico' %}
         <div class="row text-center">
-            <div class="col-md-6 mb-4">
+            <div class="col-md-4 mb-4">
                 <div class="card shadow-sm rounded-4">
                     <div class="card-body">
                         <h5 class="card-title">Usuarios</h5>
-                        <a href="{% url 'ver_usuarios_biomedico' %}" class="btn btn-outline-primary">Ver usuarios</a>
+                        <a href="{% url 'ver_usuarios_biomedico' %}" class="btn btn-outline-info">Ver usuarios</a>
                     </div>
                 </div>
             </div>
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm rounded-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Equipos Médicos</h5>
+                        <a href="{% url 'lista_equipos' %}" class="btn btn-outline-primary">Ver equipos</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm rounded-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Fallos Reportados</h5>
+                        <a href="{% url 'lista_fallos' %}" class="btn btn-outline-danger">Ver fallos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row text-center">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm rounded-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Horarios Biomédicos</h5>
+                        <a href="{% url 'lista_horarios' %}" class="btn btn-outline-warning">Ver horarios</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm rounded-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Reservas de Equipos</h5>
+                        <a href="{% url 'lista_reservas' %}" class="btn btn-outline-secondary">Ver reservas</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% elif rol == 'estudiante' %}
+        <div class="row text-center">
             <div class="col-md-6 mb-4">
                 <div class="card shadow-sm rounded-4">
                     <div class="card-body">
@@ -78,33 +117,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row text-center">
-            <div class="col-md-6 mb-4">
+            <div class="col-md-4 mb-4">
                 <div class="card shadow-sm rounded-4">
                     <div class="card-body">
-                        <h5 class="card-title">Horarios Biomédicos</h5>
-                        <a href="{% url 'lista_horarios' %}" class="btn btn-outline-primary">Ver horarios</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm rounded-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Reservas de Equipos</h5>
-                        <a href="{% url 'lista_reservas' %}" class="btn btn-outline-primary">Ver reservas</a>
-                    </div>
-                </div>
-            </div>
-         </div>
-
-    {% elif rol == 'estudiante' %}
-        <div class="row text-center">
-            <div class="col-md-6 offset-md-3 mb-4">
-                <div class="card shadow-sm rounded-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Reservar Equipo</h5>
-                        <a href="{% url 'crear_reserva' %}" class="btn btn-outline-primary">Reservar</a>
+                        <h5 class="card-title">Fallos Reportados</h5>
+                        <a href="{% url 'lista_fallos' %}" class="btn btn-outline-danger">Ver fallos</a>
                     </div>
                 </div>
             </div>

@@ -2,13 +2,15 @@
 {% block content %}
 <div class="container">
     <h2 class="mb-4">Lista de Fallos Reportados</h2>
-
-    <div class="mb-3 text-end">
-        <a href="{% url 'crear_fallo' %}" class="btn btn-success">
-            + Reportar Nuevo Fallo
-        </a>
-    </div>
-
+    
+    {% if rol in 'admin_sistema' or rol == 'biomedico' %}
+        <div class="mb-3 text-end">
+               <a href="{% url 'crear_fallo' %}" class="btn btn-success">     
+                + Reportar Nuevo Fallo
+                </a>
+        </div>
+    {% endif %}
+    
     {% if fallos %}
         <table class="table table-bordered table-hover">
             <thead class="table-dark">
@@ -18,7 +20,6 @@
                     <th>Fecha de Reporte</th>
                     <th>Descripción</th>
                     <th>Estado</th>
-                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
