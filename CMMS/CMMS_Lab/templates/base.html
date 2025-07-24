@@ -20,19 +20,21 @@
                     {% with rol=user.perfilusuario.rol %}
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                        <!-- Dropdown: Usuarios -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Usuarios</a>
-                            <ul class="dropdown-menu">
-                                {% if rol == 'admin_sistema' %}
-                                    <li><a class="dropdown-item" href="{% url 'lista_usuarios' %}">Lista de Usuarios</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'registrar_biomedico' %}">Registrar Usuario</a></li>
-                                {% elif rol == 'biomedico' %}
-                                    <li><a class="dropdown-item" href="{% url 'ver_usuarios_biomedico' %}">Ver Usuarios</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'registrar_biomedico' %}">Registrar Usuario</a></li>
-                                {% endif %}
-                            </ul>
-                        </li>
+{% if rol != 'estudiante' %}
+<!-- Dropdown: Usuarios -->
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Usuarios</a>
+    <ul class="dropdown-menu">
+        {% if rol == 'admin_sistema' %}
+            <li><a class="dropdown-item" href="{% url 'lista_usuarios' %}">Lista de Usuarios</a></li>
+            <li><a class="dropdown-item" href="{% url 'registrar_biomedico' %}">Registrar Usuario</a></li>
+        {% elif rol == 'biomedico' %}
+            <li><a class="dropdown-item" href="{% url 'ver_usuarios_biomedico' %}">Ver Usuarios</a></li>
+            <li><a class="dropdown-item" href="{% url 'registrar_biomedico' %}">Registrar Usuario</a></li>
+        {% endif %}
+    </ul>
+</li>
+{% endif %}
 
                         <!-- Dropdown: Equipos -->
                         <li class="nav-item dropdown">

@@ -10,7 +10,7 @@
     </div>
 
     {% if usuarios %}
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped align-middle">
             <thead class="table-dark">
                 <tr>
                     <th>Nombre de usuario</th>
@@ -18,7 +18,7 @@
                     <th>Matrícula</th>
                     <th>Especialidad</th>
                     <th>Teléfono</th>
-                    <th>Email</th>
+                    <th></th>  <!-- columna vacía para el botón -->
                 </tr>
             </thead>
             <tbody>
@@ -26,10 +26,14 @@
                 <tr>
                     <td>{{ perfil.user.username }}</td>
                     <td>{{ perfil.rol }}</td>
-                    <td>{{ perfil.matricula }}</td>
-                    <td>{{ perfil.especialidad }}</td>
-                    <td>{{ perfil.telefono }}</td>
-                    <td>{{ perfil.email }}</td>
+                    <td>{{ perfil.matricula|default:"—" }}</td>
+                    <td>{{ perfil.especialidad|default:"—" }}</td>
+                    <td>{{ perfil.telefono|default:"—" }}</td>
+                    <td class="text-center">
+                        <a href="{% url 'editar_usuario' perfil.user.id %}" class="btn btn-sm btn-warning">
+                            Editar
+                        </a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

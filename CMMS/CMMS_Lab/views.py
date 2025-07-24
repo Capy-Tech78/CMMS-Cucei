@@ -210,21 +210,55 @@ def crear_reserva(request):
 # Editar usuario
 @login_required
 def editar_usuario(request, user_id):
+    # Solo admin puede editar usuarios
     if request.user.perfilusuario.rol != 'admin_sistema':
         return redirect('dashboard')
-    
-    perfil = get_object_or_404(PerfilUsuario, id=user_id)
-    return render(request, 'usuarios/editar.html', {'perfil': perfil})
+
+    user = get_object_or_404(User, id=user_id)
+    perfil = get_object_or_404(PerfilUsuario, user=user)
+
+    if request.method == 'POST':
+        # Usa el mismo formulario que para registrar, pero con instance
+        form = RegistroBiomedicoForm(request.POST, instance=user)
+        if form.is_valid():
+            # Guarda cambios en User
+            user = form.save()
+
+            # Guarda cambios en PerfilUsuario si tienes campos extra
+            perfil.matricula = form.cleaned_data.get('matricula')
+            perfil.telefono = form.cleaned_data.get('telefono')
+            perfil.especialidad = form.cleaned_data.get('especialidad')
+
+            # Validar que solo admin pueda poner rol admin
+            nuevo_rol = form.cleaned_data.get('rol')
+            if request.user.perfilusuario.rol == 'admin_sistema':
+                perfil.rol = nuevo_rol
+
+            perfil.save()
+
+            return redirect('lista_usuarios')
+    else:
+        # Prellenar formulario con los datos existentes
+        form = RegistroBiomedicoForm(instance=user, initial={
+            'matricula': perfil.matricula,
+            'telefono': perfil.telefono,
+            'especialidad': perfil.especialidad,
+            'rol': perfil.rol
+        })
+
+    return render(request, 'usuarios/editar.html', {'form': form})
 
 # Editar equipo
 @login_required
 def editar_equipo(request, equipo_id):
-    perfil = request.user.perfilusuario
-    if perfil.rol not in ['admin_sistema', 'biomedico']:
-        return redirect('dashboard')
-
     equipo = get_object_or_404(EquipoMedico, id=equipo_id)
-    return render(request, 'equipos/editar.html', {'equipo': equipo})
+    form = EquipoMedicoForm(request.POST or None, request.FILES or None, instance=equipo)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('lista_equipos') 
+    return render(request, 'equipos/editar.html', {'form': form, 'equipo': equipo})
 
 # Editar fallo
 @login_required

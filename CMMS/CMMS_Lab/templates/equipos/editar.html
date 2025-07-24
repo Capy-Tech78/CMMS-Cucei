@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container">
-    <h2>Editar Equipo Médico</h2>
-    <p>Página en construcción. Aquí podrás editar la información del equipo.</p>
+    <h2 class="mb-4">Editar datos del equipo</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <a href="{% url 'lista_equipos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
 </div>
 {% endblock %}

@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container">
-    <h2>Editar Usuario</h2>
-    <p>Página en construcción. Aquí podrás editar los datos del usuario.</p>
+    <h2 class="mb-4">Editar datos del usario</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
 </div>
 {% endblock %}

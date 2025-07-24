@@ -39,8 +39,6 @@
                     <td>
                         {% if request.user.perfilusuario.rol == 'admin_sistema' %}
                             <a href="{% url 'editar_fallo' fallo.id %}" class="btn btn-sm btn-warning">Editar</a>
-                        {% else %}
-                            <span class="text-muted">Solo lectura</span>
                         {% endif %}
                     </td>
                 </tr>

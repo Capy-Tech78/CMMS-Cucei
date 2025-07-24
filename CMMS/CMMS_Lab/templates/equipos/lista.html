@@ -9,45 +9,51 @@
         </a>
     </div>
 
-<table class="table table-striped table-bordered">
-    <thead class="table-dark">
-        <tr>
-            <th>Nombre</th>
-            <th>Modelo</th>
-            <th>Estado</th>
-            <th>Ubicación</th>
-            <th>Serie</th>
-            <th>Fabricante</th>
-            <th>Fecha de adquisición</th>
-            <th>Mantenimiento preventivo</th>
-            <th>Imagen</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for equipo in equipos %}
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
-                <td>{{ equipo.nombre }}</td>
-                <td>{{ equipo.modelo }}</td>
-                <td>{{ equipo.get_estado_display }}</td>
-                <td>{{ equipo.ubicacion }}</td>
-                <td>{{ equipo.numero_serie }}</td>
-                <td>{{ equipo.fabricante }}</td>
-                <td>{{ equipo.fecha_adquisicion }}</td>
-                <td>{{ equipo.mantenimiento_preventivo }}</td>
-                <td>
-                    {% if equipo.imagen %}
-                        <img src="{{ equipo.imagen.url }}" alt="Imagen del equipo" width="100">
-                    {% else %}
-                        No disponible
-                    {% endif %}
-                </td>
+                <th>Nombre</th>
+                <th>Modelo</th>
+                <th>Estado</th>
+                <th>Ubicación</th>
+                <th>Serie</th>
+                <th>Fabricante</th>
+                <th>Fecha de adquisición</th>
+                <th>Mantenimiento preventivo</th>
+                <th>Imagen</th>
+                <th></th> <!-- columna vacía para el botón -->
             </tr>
-        {% empty %}
-            <tr>
-                <td colspan="9" class="text-center">No hay equipos registrados.</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% for equipo in equipos %}
+                <tr>
+                    <td>{{ equipo.nombre }}</td>
+                    <td>{{ equipo.modelo }}</td>
+                    <td>{{ equipo.get_estado_display }}</td>
+                    <td>{{ equipo.ubicacion|default:"—" }}</td>
+                    <td>{{ equipo.numero_serie|default:"—" }}</td>
+                    <td>{{ equipo.fabricante|default:"—" }}</td>
+                    <td>{{ equipo.fecha_adquisicion|date:"d/m/Y" }}</td>
+                    <td>{{ equipo.mantenimiento_preventivo|date:"d/m/Y" }}</td>
+                    <td>
+                        {% if equipo.imagen %}
+                            <img src="{{ equipo.imagen.url }}" alt="Imagen del equipo" width="100">
+                        {% else %}
+                            <span class="text-muted">No disponible</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <a href="{% url 'editar_equipo' equipo.id %}" class="btn btn-sm btn-warning">
+                            Editar
+                        </a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="10" class="text-center">No hay equipos registrados.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}
